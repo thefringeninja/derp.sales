@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
+    <Compile Include="Features\CustomerForecasts\CustomerForecastsModule.cs" />
     <Compile Include="Inflector.cs" />
     <Compile Include="Features\Home\HomeModule.cs" />
     <Compile Include="OrganizationByFeature.cs" />
@@ -95,6 +96,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Features\CustomerForecasts\views\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>
