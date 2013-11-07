@@ -72,11 +72,17 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Home\views\favicon.png" />
+    <None Include="Features\CustomerForecasts\views\CustomerListView.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Features\CustomerForecasts\CustomerForecastsModule.cs" />
+    <Compile Include="Features\CustomerForecasts\CustomerListViewModel.cs" />
+    <Compile Include="Features\CustomerForecasts\CustomerViewModel.cs" />
+    <Compile Include="Features\CustomerForecasts\DataModel.cs" />
+    <Compile Include="Features\CustomerForecasts\GetListOfCustomers.cs" />
+    <Compile Include="Features\CustomerForecasts\Registrations.cs" />
     <Compile Include="Inflector.cs" />
     <Compile Include="Features\Home\HomeModule.cs" />
     <Compile Include="OrganizationByFeature.cs" />
@@ -96,7 +102,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Features\CustomerForecasts\views\" />
     <Folder Include="Views\" />
   </ItemGroup>
   <PropertyGroup>

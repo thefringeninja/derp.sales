@@ -1,0 +1,15 @@
+﻿@inherits NancyRazorViewBase<Derp.Sales.Web.Features.CustomerForecasts.CustomerListViewModel>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <ul>
+        @foreach (var customer in Model)
+        {
+            <li><a href="~/customer-forecasts/@(customer.CustomerId)">@customer.CustomerName</a></li>
+        }
+    </ul>
+</body>
+</html>

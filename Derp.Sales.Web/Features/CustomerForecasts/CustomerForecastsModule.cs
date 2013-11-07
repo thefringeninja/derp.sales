@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Nancy;
+﻿using Nancy;
 
 namespace Derp.Sales.Web.Features.CustomerForecasts
 {
     public class CustomerForecastsModule : NancyModule
     {
-        public CustomerForecastsModule()
+        public CustomerForecastsModule(GetListOfCustomers getListOfCustomers)
             : base("/customer-forecasts")
         {
-            Get["/"] = _ => 200;
+            Get["/"] = _ => Negotiate.WithModel(getListOfCustomers());
         }
     }
 }
