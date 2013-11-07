@@ -73,6 +73,7 @@
   <ItemGroup>
     <Content Include="Features\Home\views\favicon.png" />
     <Content Include="Features\CustomerForecasts\views\ProductListView.cshtml" />
+    <Content Include="Features\CustomerForecasts\views\ForecastCustomerSales.cshtml" />
     <None Include="Features\CustomerForecasts\views\CustomerListView.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -104,6 +105,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Derp.Sales\Derp.Sales.csproj">
+      <Project>{6491E679-0E55-41A3-9F12-23C983E1F023}</Project>
+      <Name>Derp.Sales</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

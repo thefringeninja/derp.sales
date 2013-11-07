@@ -53,8 +53,9 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PowerAssert">
-      <HintPath>..\packages\Simple.Testing.3.0.0.0\lib\PowerAssert.dll</HintPath>
+    <Reference Include="PowerAssert, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\lib\PowerAssert.dll</HintPath>
     </Reference>
     <Reference Include="Simple.Testing.ClientFramework">
       <HintPath>..\packages\Simple.Testing.3.0.0.0\lib\Simple.Testing.ClientFramework.dll</HintPath>

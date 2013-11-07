@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="MessageBuilders\New.cs" />
+    <Compile Include="Messages\ForecastCustomerSales.cs" />
     <Compile Include="Messaging\AdHocHandler.cs" />
     <Compile Include="Messaging\BatchedHandler.cs" />
     <Compile Include="Messaging\Bus.cs" />

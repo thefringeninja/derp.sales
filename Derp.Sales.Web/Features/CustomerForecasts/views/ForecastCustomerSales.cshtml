@@ -1,0 +1,26 @@
+﻿@inherits NancyRazorViewBase<Derp.Sales.Messages.ForecastCustomerSales>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+</head>
+<body>
+    <form method="POST">
+        <input type="hidden" name="CustomerId" value="@Model.CustomerId"/>
+        <input type="hidden" name="ProductId" value="@Model.ProductId"/>
+        <div>
+            <label>Week</label>
+            <div>
+                <input type="text" name="Week" value="@Model.Week"/>
+            </div>
+        </div>
+        <div>
+            <label>Quantity</label>
+            <div>
+                <input type="number" name="Quantity" value="@Model.Quantity"/>
+            </div>
+        </div>
+        <input type="submit" value="Forecast"/>
+    </form>
+</body>
+</html>

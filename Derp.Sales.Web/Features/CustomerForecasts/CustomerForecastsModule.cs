@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Derp.Sales.MessageBuilders;
+using Derp.Sales.Messages;
 using Nancy;
+using Nancy.ModelBinding;
 
 namespace Derp.Sales.Web.Features.CustomerForecasts
 {
@@ -18,6 +21,12 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
             {
                 Guid customerId = p.customerId;
                 return Negotiate.WithModel(getListOfProducts(customerId));
+            };
+            Get["/{customerId}/{productId}"] = p =>
+            {
+                ForecastCustomerSales viewModel = this.Bind<New.ForecastCustomerSalesBuilder>();
+
+                return Negotiate.WithModel(viewModel);
             };
         }
     }
