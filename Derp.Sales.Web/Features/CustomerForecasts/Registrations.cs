@@ -15,6 +15,9 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
                 yield return new InstanceRegistration(
                     typeof(GetListOfCustomers), 
                     DataModel.GetCustomerList());
+                yield return new InstanceRegistration(
+                    typeof(GetListOfProducts),
+                    DataModel.GetProductList());
             }
         }
 

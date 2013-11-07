@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Features\Home\views\favicon.png" />
+    <Content Include="Features\CustomerForecasts\views\ProductListView.cshtml" />
     <None Include="Features\CustomerForecasts\views\CustomerListView.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
