@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5576A718-052F-4000-8F89-D6A9F46C77A7}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Derp.Sales", "Derp.Sales\Derp.Sales.csproj", "{6491E679-0E55-41A3-9F12-23C983E1F023}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Derp.Sales.Web", "Derp.Sales.Web\Derp.Sales.Web.csproj", "{B4F9C525-5C56-440E-B4C2-972A33D7C8CD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Specifications", "Specifications", "{0705169E-DB92-4AD1-B0E8-3397539D72E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Derp.Sales.Tests", "Derp.Sales.Tests\Derp.Sales.Tests.csproj", "{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6491E679-0E55-41A3-9F12-23C983E1F023}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6491E679-0E55-41A3-9F12-23C983E1F023}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6491E679-0E55-41A3-9F12-23C983E1F023}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6491E679-0E55-41A3-9F12-23C983E1F023}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4F9C525-5C56-440E-B4C2-972A33D7C8CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4F9C525-5C56-440E-B4C2-972A33D7C8CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4F9C525-5C56-440E-B4C2-972A33D7C8CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4F9C525-5C56-440E-B4C2-972A33D7C8CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D70DE433-D7E6-4D19-B78E-DB2DDC29F0E4} = {0705169E-DB92-4AD1-B0E8-3397539D72E4}
+	EndGlobalSection
+EndGlobal

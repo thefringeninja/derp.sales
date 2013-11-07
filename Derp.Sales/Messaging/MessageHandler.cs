@@ -1,0 +1,3 @@
+﻿namespace Derp.Sales.Messaging
+{
+}
