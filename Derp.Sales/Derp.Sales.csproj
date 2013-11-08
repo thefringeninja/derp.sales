@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\IsoWeek.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="MessageBuilders\New.cs" />
     <Compile Include="Messages\ForecastCustomerSales.cs" />
