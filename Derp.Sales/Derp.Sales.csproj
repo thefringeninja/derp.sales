@@ -40,9 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\CustomerSalesForecastingHandler.cs" />
+    <Compile Include="Domain\AggregateRoot.cs" />
     <Compile Include="Domain\IsoWeek.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Infrastructure\DelegateAdjuster.cs" />
+    <Compile Include="Infrastructure\PrivateReflectionDynamicObject.cs" />
+    <Compile Include="Infrastructure\PrivateReflectionDynamicObjectExtensions.cs" />
     <Compile Include="MessageBuilders\New.cs" />
+    <Compile Include="Messages\CustomerSalesForecasted.cs" />
     <Compile Include="Messages\ForecastCustomerSales.cs" />
     <Compile Include="Messaging\AdHocHandler.cs" />
     <Compile Include="Messaging\BatchedHandler.cs" />
@@ -64,6 +70,7 @@
     <Compile Include="Messaging\Subscriber.cs" />
     <Compile Include="Messaging\WideningHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemTime.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -48,6 +48,28 @@ namespace Derp.Sales.Tests.Specifications
             return specifications;
         }
 
+        public IEnumerable<Specification> invalid_input()
+        {
+            var invalid = new[] {"2009-W0", "2009-W54"};
+
+            List<Specification> specifications = new List<Specification>();
+
+            foreach (var isoWeek in invalid)
+            {
+                specifications.Add(new FailingSpecification<string, ArgumentOutOfRangeException>
+                {
+                    Name = "invalid input " + isoWeek,
+                    On = () => isoWeek,
+                    When = week => IsoWeek.FromString(week),
+                    Expect =
+                    {
+                        ex => ex.ParamName == "week"
+                    }
+                });
+            }
+            return specifications;
+        }
+
         public Specification comparisons()
         {
             return new ConstructorSpecification<IsoWeek>

@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Derp.Sales.Messaging;
+using Derp.Sales.Tests.Fixtures;
 using Simple.Testing.ClientFramework;
 
 namespace Derp.Sales.Tests.Templates
@@ -46,24 +48,27 @@ namespace Derp.Sales.Tests.Templates
         public Delegate GetWhen()
         {
             return new Func<Messages, Result>(
-                messages =>
+                input =>
                 {
-                    var results = new List<Message>();
+                    var output = new List<Message>();
                     var bus = new Bus();
                     Bootstrap(bus);
 
-                    bus.Subscribe(new AdHocHandler<Message>(message => results.Add(message)));
+                    bus.Subscribe(new AdHocHandler<Message>(message => output.Add(message)));
 
                     Exception thrownException = null;
                     try
                     {
-                        bus.Publish(messages.Last());
+                        foreach (var message in input)
+                        {
+                            bus.Publish(message).Wait();
+                        }
                     }
                     catch (Exception ex)
                     {
                         thrownException = ex;
                     }
-                    return new Result(results, thrownException);
+                    return new Result(output.Except(input), thrownException);
                 });
         }
 
@@ -142,18 +147,37 @@ namespace Derp.Sales.Tests.Templates
 
             public Exception ThrownException { get; private set; }
 
-            public bool DoesNothing
-            {
-                get
-                {
-                    // i.e does nothing
-                    return false == actions.Any();
-                }
-            }
+                    public bool DidNotChangeAnything()
+        {
+            return false == actions.Any();
+        }
 
-            public bool Does(params Func<object>[] does)
+        public bool Does(params Func<object>[] does)
+        {
+            var shouldHaveDone = does.Select(ToMessage).ToList();
+            var did = actions.ToList();
+            return shouldHaveDone.SequenceEqual(did, MessageEqualityComparer.Instance);
+        }
+
+        private static Message ToMessage(Func<object> factory)
+        {
+            dynamic messageCandidate = factory();
+
+            try
             {
-                return does.Select(f => f()).SequenceEqual(actions, SerializationEqualityComparer.Instance);
+                return (Command) messageCandidate;
+            }
+            catch
+            {
+            }
+            try
+            {
+                return (Event) messageCandidate;
+            }
+            catch
+            {
+            }
+            return new CouldNotConvertToMessageMessage(messageCandidate);
             }
 
             public override string ToString()

@@ -10,6 +10,10 @@ namespace Derp.Sales.Domain
 
         private IsoWeek(int year, int week)
         {
+            if (week <= 0 || week > 53)
+            {
+                throw new ArgumentOutOfRangeException("week");
+            }
             this.year = year;
             this.week = week;
         }
@@ -117,6 +121,14 @@ namespace Derp.Sales.Domain
         {
             var week = GetIso8601WeekOfYear(dateTime);
             return new IsoWeek(week.Item1, week.Item2);
+        }
+
+        public static IsoWeek FromString(string s)
+        {
+            var parts = s.Split('-');
+            var year = parts[0];
+            var week = parts[1].Remove(0, 1);
+            return new IsoWeek(Int32.Parse(year), Int32.Parse(week));
         }
 
 

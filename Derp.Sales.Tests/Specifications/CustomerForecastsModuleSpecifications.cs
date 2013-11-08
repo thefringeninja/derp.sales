@@ -17,18 +17,13 @@ namespace Derp.Sales.Tests.Specifications
 {
     public class CustomerForecastsModuleSpecifications
     {
-        private static readonly Guid CustomerId = Guid.NewGuid();
-        private static readonly Guid ProductId = Guid.NewGuid();
-        private static readonly string ProductName = "X-75";
-        private static readonly string ProductDescription = "Ninja Pro Gaming Headsets";
-
         private static void Bootstrap(ConfigurableBootstrapper.ConfigurableBootstrapperConfigurator configure)
         {
             configure.Dependency<GetListOfCustomers>(
                 () => new CustomerListViewModel(
                     new[]
                     {
-                        new CustomerViewModel(CustomerId, "Customer A"),
+                        new CustomerViewModel(TheCustomer.Id, "Customer A"),
                         new CustomerViewModel(Guid.NewGuid(), "Customer B"),
                         new CustomerViewModel(Guid.NewGuid(), "Customer C"),
                     }))
@@ -37,7 +32,7 @@ namespace Derp.Sales.Tests.Specifications
                              customerId,
                              new[]
                              {
-                                 new ProductViewModel(ProductId, ProductName, ProductDescription),
+                                 new ProductViewModel(AProduct.Id, AProduct.ProductName, AProduct.ProductDescription),
                              }))
                      .Dependency<IModelValidator>(typeof (FluentValidationValidator))
                      .Dependency<IModelValidatorFactory>(typeof (FluentValidationValidatorFactory))
@@ -66,13 +61,13 @@ namespace Derp.Sales.Tests.Specifications
             return new ModuleSpecification<CustomerForecastsModule>
             {
                 Bootstrap = Bootstrap,
-                When = () => UserAgent.Get("/customer-forecasts/" + CustomerId),
+                When = () => UserAgent.Get("/customer-forecasts/" + TheCustomer.Id),
                 Expect =
                 {
                     sut => sut.Response.StatusCode.Is(HttpStatusCode.OK),
                     sut => sut.Response.ViewModel<ProductListViewModel>() != null,
                     sut => sut.Response.ViewModel<ProductListViewModel>().Count().Equals(1),
-                    sut => sut.Response.ViewModel<ProductListViewModel>().CustomerId.Equals(CustomerId)
+                    sut => sut.Response.ViewModel<ProductListViewModel>().CustomerId.Equals(TheCustomer.Id)
                 }
             };
         }
@@ -85,18 +80,17 @@ namespace Derp.Sales.Tests.Specifications
                 OnContext = context => context.Form(
                     new
                     {
-                        CustomerId,
-                        ProductId,
+                        customerId = TheCustomer.Id, productId = AProduct.Id,
                         week = "2013-W11",
                         quantity = 10000
                     }.ToApplicationFormUrlEncoded()),
-                When = () => UserAgent.Post("/customer-forecasts/" + CustomerId + "/" + ProductId),
+                When = () => UserAgent.Post("/customer-forecasts/" + TheCustomer.Id + "/" + AProduct.Id),
                 Expect =
                 {
                     sut => sut.Response.StatusCode.Is(HttpStatusCode.SeeOther),
-                    sut => sut.Response.Headers["Location"] == "/customer-forecasts/" + CustomerId + "/" + ProductId,
+                    sut => sut.Response.Headers["Location"] == "/customer-forecasts/" + TheCustomer.Id + "/" + AProduct.Id,
                     sut => sut.Does(
-                        () => New.Forecast().ForCustomer(CustomerId).ForProduct(ProductId)
+                        () => New.Forecast().ForCustomer(TheCustomer.Id).ForProduct(AProduct.Id)
                                  .InWeek(11, 2013)
                                  .QuantityOf(10000))
                 }
@@ -110,8 +104,7 @@ namespace Derp.Sales.Tests.Specifications
                 {
                     "blank customer id", new
                     {
-                        CustomerId = Guid.Empty,
-                        ProductId,
+                        CustomerId = Guid.Empty, productId = AProduct.Id,
                         week = "2013-W11",
                         quantity = 10000
                     }
@@ -119,7 +112,7 @@ namespace Derp.Sales.Tests.Specifications
                 {
                     "blank product id", new
                     {
-                        CustomerId,
+                        customerId = TheCustomer.Id,
                         ProductId = Guid.Empty,
                         week = "2013-W11",
                         quantity = 10000
@@ -128,8 +121,7 @@ namespace Derp.Sales.Tests.Specifications
                 {
                     "blank week", new
                     {
-                        CustomerId,
-                        ProductId,
+                        customerId = TheCustomer.Id, productId = AProduct.Id,
                         week = String.Empty,
                         quantity = 10000
                     }
@@ -137,8 +129,7 @@ namespace Derp.Sales.Tests.Specifications
                 {
                     "quantity less than 1", new
                     {
-                        CustomerId,
-                        ProductId,
+                        customerId = TheCustomer.Id, productId = AProduct.Id,
                         week = String.Empty,
                         quantity = 0
                     }
@@ -153,7 +144,7 @@ namespace Derp.Sales.Tests.Specifications
                        Name = "invalid inputs: " + name,
                        Bootstrap = Bootstrap,
                        OnContext = context => context.Form(form.ToApplicationFormUrlEncoded()),
-                       When = () => UserAgent.Post("/customer-forecasts/" + CustomerId + "/" + ProductId),
+                       When = () => UserAgent.Post("/customer-forecasts/" + TheCustomer.Id + "/" + AProduct.Id),
                        Expect =
                        {
                            sut => sut.Response.StatusCode.Is(HttpStatusCode.BadRequest),

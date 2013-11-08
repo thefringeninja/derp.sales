@@ -68,22 +68,6 @@ namespace Derp.Sales.Tests.Fixtures
             return new CouldNotConvertToMessageMessage(messageCandidate);
         }
 
-        class CouldNotConvertToMessageMessage : Message
-        {
-            private readonly object messageCandidate;
-            public Guid MessageId { get; private set; }
-
-            public CouldNotConvertToMessageMessage(object messageCandidate)
-            {
-                this.messageCandidate = messageCandidate;
-            }
-
-            public override string ToString()
-            {
-                return string.Format("Could not covert {0} to a message.", messageCandidate);
-            }
-        }
-
 
         public override string ToString()
         {
@@ -145,5 +129,21 @@ namespace Derp.Sales.Tests.Fixtures
         }
 
         #endregion
+    }
+
+    class CouldNotConvertToMessageMessage : Message
+    {
+        private readonly object messageCandidate;
+        public Guid MessageId { get; private set; }
+
+        public CouldNotConvertToMessageMessage(object messageCandidate)
+        {
+            this.messageCandidate = messageCandidate;
+        }
+
+        public override string ToString()
+        {
+            return String.Format("Could not covert {0} to a message.", messageCandidate);
+        }
     }
 }
