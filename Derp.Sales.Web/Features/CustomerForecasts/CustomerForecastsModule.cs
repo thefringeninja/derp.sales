@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Derp.Sales.MessageBuilders;
 using Derp.Sales.Messages;
+using Derp.Sales.Messaging;
 using Nancy;
+using Nancy.Extensions;
 using Nancy.ModelBinding;
 
 namespace Derp.Sales.Web.Features.CustomerForecasts
@@ -12,7 +14,10 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
 
     public class CustomerForecastsModule : NancyModule
     {
-        public CustomerForecastsModule(GetListOfCustomers getListOfCustomers, GetListOfProducts getListOfProducts)
+        public CustomerForecastsModule(
+            CommandSender bus,
+            GetListOfCustomers getListOfCustomers, 
+            GetListOfProducts getListOfProducts)
             : base("/customer-forecasts")
         {
             Get["/"] = _ => Negotiate.WithModel(getListOfCustomers());
@@ -27,6 +32,16 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
                 ForecastCustomerSales viewModel = this.Bind<New.ForecastCustomerSalesBuilder>();
 
                 return Negotiate.WithModel(viewModel);
+            };
+            Post["/{customerId}/{productId}", runAsync: true] = async (_, ctx) =>
+            {
+                ForecastCustomerSales command = this.Bind<New.ForecastCustomerSalesBuilder>();
+
+                await bus.Send(command);
+
+                return Context.GetRedirect("/customer-forecasts/" + command.CustomerId + "/" + command.ProductId)
+                              .WithStatusCode(HttpStatusCode.SeeOther);
+
             };
         }
     }

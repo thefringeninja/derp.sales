@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Derp.Sales.MessageBuilders;
+using Derp.Sales.Messages;
+using Derp.Sales.Messaging;
 using Derp.Sales.Tests.Fixtures;
 using Derp.Sales.Tests.Templates;
 using Derp.Sales.Web.Features.CustomerForecasts;
@@ -30,7 +34,7 @@ namespace Derp.Sales.Tests.Specifications
                         customerId => new ProductListViewModel(customerId, new []
                         {
                             new ProductViewModel(ProductId, ProductName, ProductDescription), 
-                        }));
+                        })).WithBus();
         }
 
         public Specification viewing_list_of_customers()
@@ -61,6 +65,32 @@ namespace Derp.Sales.Tests.Specifications
                     sut => sut.Response.ViewModel<ProductListViewModel>() != null,
                     sut => sut.Response.ViewModel<ProductListViewModel>().Count().Equals(1),
                     sut => sut.Response.ViewModel<ProductListViewModel>().CustomerId.Equals(CustomerId)
+                }
+            };
+        }
+
+        public Specification forecasting_sales()
+        {
+            return new ModuleSpecification<CustomerForecastsModule>
+            {
+                Bootstrap = Bootstrap,
+                OnContext = context => context.Form(
+                    new
+                    {
+                        CustomerId,
+                        ProductId,
+                        week = "2013-W11",
+                        quantity = 10000
+                    }.ToApplicationFormUrlEncoded()),
+                When = () => UserAgent.Post("/customer-forecasts/" + CustomerId + "/" + ProductId),
+                Expect =
+                {
+                    sut => sut.Response.StatusCode.Is(HttpStatusCode.SeeOther),
+                    sut => sut.Response.Headers["Location"] == "/customer-forecasts/" + CustomerId + "/" + ProductId,
+                    sut => sut.Does(
+                        () => New.Forecast().ForCustomer(CustomerId).ForProduct(ProductId)
+                                 .InWeek(11, 2013)
+                                 .QuantityOf(10000))
                 }
             };
         }

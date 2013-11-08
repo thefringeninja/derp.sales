@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="AssertionExtensions.cs" />
     <Compile Include="BrowserContextExtensions.cs" />
+    <Compile Include="DtoExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Fixtures\MessageEqualityComparer.cs" />
     <Compile Include="Fixtures\ReadabilityExtensions.cs" />

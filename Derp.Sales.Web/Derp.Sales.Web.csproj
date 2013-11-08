@@ -75,7 +75,9 @@
     <Content Include="Features\CustomerForecasts\views\ProductListView.cshtml" />
     <Content Include="Features\CustomerForecasts\views\ForecastCustomerSales.cshtml" />
     <None Include="Features\CustomerForecasts\views\CustomerListView.cshtml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapper.cs" />
