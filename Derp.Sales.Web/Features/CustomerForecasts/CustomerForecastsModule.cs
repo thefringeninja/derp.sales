@@ -35,7 +35,12 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
             };
             Post["/{customerId}/{productId}", runAsync: true] = async (_, ctx) =>
             {
-                ForecastCustomerSales command = this.Bind<New.ForecastCustomerSalesBuilder>();
+                ForecastCustomerSales command = this.BindAndValidate<New.ForecastCustomerSalesBuilder>();
+
+                if (false == ModelValidationResult.IsValid)
+                {
+                    return 400;
+                }
 
                 await bus.Send(command);
 
@@ -45,6 +50,7 @@ namespace Derp.Sales.Web.Features.CustomerForecasts
             };
         }
     }
+
     public class ProductViewModel
     {
         public Guid ProductId { get; private set; }

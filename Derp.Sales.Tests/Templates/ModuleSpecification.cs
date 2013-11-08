@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Reflection;
 using Derp.Sales.Tests.Fixtures;
 using Nancy;
-using Nancy.Bootstrapper;
 using Nancy.Responses;
 using Nancy.Testing;
 using Nancy.ViewEngines;
@@ -20,10 +18,6 @@ namespace Derp.Sales.Tests.Templates
 
         static ModuleSpecification()
         {
-            AppDomainAssemblyTypeScanner.AssembliesToScan = new Func<Assembly, bool>[]
-            {
-                assembly => false == assembly.FullName.StartsWith("Derp")
-            };
         }
 
         public Action Before;
@@ -51,8 +45,6 @@ namespace Derp.Sales.Tests.Templates
 
         public Delegate GetOn()
         {
-            AppDomainAssemblyTypeScanner.UpdateTypes();
-
             return new Func<UserAgent>(
                 () =>
                 {

@@ -9,6 +9,8 @@ using Derp.Sales.Tests.Templates;
 using Derp.Sales.Web.Features.CustomerForecasts;
 using Nancy;
 using Nancy.Testing;
+using Nancy.Validation;
+using Nancy.Validation.FluentValidation;
 using Simple.Testing.ClientFramework;
 
 namespace Derp.Sales.Tests.Specifications
@@ -30,11 +32,17 @@ namespace Derp.Sales.Tests.Specifications
                         new CustomerViewModel(Guid.NewGuid(), "Customer B"),
                         new CustomerViewModel(Guid.NewGuid(), "Customer C"),
                     }))
-                    .Dependency<GetListOfProducts>(
-                        customerId => new ProductListViewModel(customerId, new []
-                        {
-                            new ProductViewModel(ProductId, ProductName, ProductDescription), 
-                        })).WithBus();
+                     .Dependency<GetListOfProducts>(
+                         customerId => new ProductListViewModel(
+                             customerId,
+                             new[]
+                             {
+                                 new ProductViewModel(ProductId, ProductName, ProductDescription),
+                             }))
+                     .Dependency<IModelValidator>(typeof (FluentValidationValidator))
+                     .Dependency<IModelValidatorFactory>(typeof (FluentValidationValidatorFactory))
+                     .Dependency<IFluentAdapterFactory>(typeof (DefaultFluentAdapterFactory))
+            .WithBus();
         }
 
         public Specification viewing_list_of_customers()
@@ -93,6 +101,65 @@ namespace Derp.Sales.Tests.Specifications
                                  .QuantityOf(10000))
                 }
             };
+        }
+
+        public IEnumerable<Specification> invalid_input()
+        {
+            var rows = new Dictionary<string, object>
+            {
+                {
+                    "blank customer id", new
+                    {
+                        CustomerId = Guid.Empty,
+                        ProductId,
+                        week = "2013-W11",
+                        quantity = 10000
+                    }
+                },
+                {
+                    "blank product id", new
+                    {
+                        CustomerId,
+                        ProductId = Guid.Empty,
+                        week = "2013-W11",
+                        quantity = 10000
+                    }
+                },
+                {
+                    "blank week", new
+                    {
+                        CustomerId,
+                        ProductId,
+                        week = String.Empty,
+                        quantity = 10000
+                    }
+                },
+                {
+                    "quantity less than 1", new
+                    {
+                        CustomerId,
+                        ProductId,
+                        week = String.Empty,
+                        quantity = 0
+                    }
+                },
+            };
+
+            return from row in rows
+                   let name = row.Key
+                   let form = row.Value
+                   select new ModuleSpecification<CustomerForecastsModule>
+                   {
+                       Name = "invalid inputs: " + name,
+                       Bootstrap = Bootstrap,
+                       OnContext = context => context.Form(form.ToApplicationFormUrlEncoded()),
+                       When = () => UserAgent.Post("/customer-forecasts/" + CustomerId + "/" + ProductId),
+                       Expect =
+                       {
+                           sut => sut.Response.StatusCode.Is(HttpStatusCode.BadRequest),
+                           sut => sut.DidNotChangeAnything()
+                       }
+                   };
         }
     }
 }

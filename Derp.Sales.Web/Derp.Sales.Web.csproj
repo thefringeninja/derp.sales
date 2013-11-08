@@ -43,6 +43,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\packages\FluentValidation.5.0.0.1\lib\Net40\FluentValidation.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Nancy, Version=0.21.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -54,6 +57,9 @@
     </Reference>
     <Reference Include="Nancy.Serialization.JsonNet">
       <HintPath>..\packages\Nancy.Serialization.JsonNet.0.21.1\lib\net40\Nancy.Serialization.JsonNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Validation.FluentValidation">
+      <HintPath>..\packages\Nancy.Validation.FluentValidation.0.21.1\lib\net40\Nancy.Validation.FluentValidation.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.ViewEngines.Razor, Version=0.21.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -85,6 +91,7 @@
     <Compile Include="Features\CustomerForecasts\CustomerListViewModel.cs" />
     <Compile Include="Features\CustomerForecasts\CustomerViewModel.cs" />
     <Compile Include="Features\CustomerForecasts\DataModel.cs" />
+    <Compile Include="Features\CustomerForecasts\ForecastCustomerSalesBuilderValidator.cs" />
     <Compile Include="Features\CustomerForecasts\GetListOfCustomers.cs" />
     <Compile Include="Features\CustomerForecasts\Registrations.cs" />
     <Compile Include="Inflector.cs" />
