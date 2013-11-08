@@ -20,10 +20,16 @@ namespace Derp.Sales.Application
 
         public async Task Handle(ForecastCustomerSales message)
         {
+            var forecastWeek = IsoWeek.FromString(message.Week);
+            var currentWeek = IsoWeek.FromDate(SystemTime.Now);
+
+            if (forecastWeek < currentWeek) throw new InvalidOperationException(String.Format("You tried to forecast for {0} but the current week is {1}. Forecasting in the past is not allowed.",
+                forecastWeek, currentWeek));
+
             CustomerSalesForecasted @event = New.Forecasted()
                                                 .ForCustomer(message.CustomerId)
                                                 .ForProduct(message.ProductId)
-                                                .QuantityOf(message.Quantity).InWeek(IsoWeek.FromString(message.Week));
+                                                .QuantityOf(message.Quantity).InWeek(forecastWeek);
             await bus.Publish(@event);
         }
 

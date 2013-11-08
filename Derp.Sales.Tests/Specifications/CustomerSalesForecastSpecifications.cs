@@ -36,5 +36,23 @@ namespace Derp.Sales.Tests.Specifications
                 }
             };
         }
+
+        public Specification forecasting_in_the_past()
+        {
+            return new MessageSpecification
+            {
+                Before = () => SystemTime.Clock = () => new DateTime(2008, 12, 28),
+                Bootstrap = bus => bus.Subscribe(new CustomerSalesForecastingHandler(bus)),
+                When =
+                    new ForecastCustomerSales(TheCustomer.Id, AProduct.Id, IsoWeek.FromDate(new DateTime(2008, 11, 1)), 10000),
+                Expect =
+                {
+                    result => result.DidNotChangeAnything(),
+                    result => result.ThrewAnException,
+                    result => result.ThrownException is InvalidOperationException,
+                    result => result.ThrownException.Message.Equals("You tried to forecast for 2008-W44 but the current week is 2008-W52. Forecasting in the past is not allowed.")
+                }
+            };
+        }
     }
 }

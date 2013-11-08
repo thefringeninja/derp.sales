@@ -137,6 +137,10 @@ namespace Derp.Sales.Tests.Templates
             public Result(IEnumerable<Message> actions, Exception ex = null)
             {
                 this.actions = actions;
+                if (ex is AggregateException)
+                {
+                    ex = ex.GetBaseException();
+                }
                 ThrownException = ex ?? new ExpectedExceptionDidNotOccurException(null);
             }
 
