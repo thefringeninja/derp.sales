@@ -3,15 +3,87 @@ using System.Globalization;
 
 namespace Derp.Sales.Domain
 {
-    public class IsoWeek
+    public class IsoWeek : IEquatable<IsoWeek>, IComparable<IsoWeek>
     {
-        private readonly int year;
         private readonly int week;
+        private readonly int year;
 
         private IsoWeek(int year, int week)
         {
             this.year = year;
             this.week = week;
+        }
+
+        #region IComparable<IsoWeek> Members
+
+        public int CompareTo(IsoWeek other)
+        {
+            return year == other.year
+                ? week.CompareTo(other.week)
+                : year.CompareTo(other.year);
+        }
+
+        #endregion
+
+        #region IEquatable<IsoWeek> Members
+
+        public bool Equals(IsoWeek other)
+        {
+            if (ReferenceEquals(null, other))
+                return false;
+            if (ReferenceEquals(this, other))
+                return true;
+            return year == other.year && week == other.week;
+        }
+
+        #endregion
+
+        public static bool operator ==(IsoWeek a, IsoWeek b)
+        {
+            return a.Equals(b);
+        }
+
+        public static bool operator !=(IsoWeek a, IsoWeek b)
+        {
+            return !(a == b);
+        }
+
+        public static bool operator >(IsoWeek a, IsoWeek b)
+        {
+            return a.CompareTo(b) > 0;
+        }
+
+        public static bool operator <(IsoWeek a, IsoWeek b)
+        {
+            return a.CompareTo(b) < 0;
+        }
+
+        public static bool operator >=(IsoWeek a, IsoWeek b)
+        {
+            return a.CompareTo(b) >= 0;
+        }
+
+        public static bool operator <=(IsoWeek a, IsoWeek b)
+        {
+            return a.CompareTo(b) <= 0;
+        }
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (ReferenceEquals(this, obj))
+                return true;
+            if (obj.GetType() != GetType())
+                return false;
+            return Equals((IsoWeek) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (year*397) ^ week;
+            }
         }
 
         // This presumes that weeks start with Monday.
@@ -27,16 +99,19 @@ namespace Derp.Sales.Domain
                 time = time.AddDays(3);
             }
 
-            
+
             var year = time.Year;
 
-            var weekOfYear = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+            var weekOfYear = CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(
+                time,
+                CalendarWeekRule.FirstFourDayWeek,
+                DayOfWeek.Monday);
             if (weekOfYear == 53 && (day > DayOfWeek.Thursday || day == DayOfWeek.Sunday))
             {
                 year--;
             }
             return Tuple.Create(year, weekOfYear);
-        } 
+        }
 
         public static IsoWeek FromDate(DateTime dateTime)
         {

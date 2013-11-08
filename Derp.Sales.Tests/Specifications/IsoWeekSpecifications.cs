@@ -47,5 +47,22 @@ namespace Derp.Sales.Tests.Specifications
             }
             return specifications;
         }
+
+        public Specification comparisons()
+        {
+            return new ConstructorSpecification<IsoWeek>
+            {
+                When = () => IsoWeek.FromDate(DateTime.Parse("1/3/2010")),
+                Expect =
+                {
+                    week => week.Equals(IsoWeek.FromDate(DateTime.Parse("1/2/2010"))),
+                    week => week >= IsoWeek.FromDate(DateTime.Parse("1/2/2010")),
+                    week => week <= IsoWeek.FromDate(DateTime.Parse("1/2/2010")),
+                    week => week == IsoWeek.FromDate(DateTime.Parse("1/2/2010")),
+                    week => week > IsoWeek.FromDate(DateTime.Parse("1/2/2009")),
+                    week => week < IsoWeek.FromDate(DateTime.Parse("1/9/2010"))
+                }
+            };
+        }
     }
 }
