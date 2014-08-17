@@ -80,6 +80,7 @@
     <Compile Include="BrowserContextExtensions.cs" />
     <Compile Include="DtoExtensions.cs" />
     <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="Fixtures\CouldNotConvertToMessageMessage.cs" />
     <Compile Include="Fixtures\MessageEqualityComparer.cs" />
     <Compile Include="Fixtures\ReadabilityExtensions.cs" />
     <Compile Include="Fixtures\SystemUnderTest.cs" />
@@ -93,10 +94,15 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultsOfTestRun.cs" />
+    <Compile Include="Specifications\AProduct.cs" />
     <Compile Include="Specifications\CustomerForecastsModuleSpecifications.cs" />
     <Compile Include="Specifications\CustomerSalesForecastSpecifications.cs" />
     <Compile Include="Specifications\IsoWeekSpecifications.cs" />
+    <Compile Include="Specifications\SystemTimeHandler.cs" />
+    <Compile Include="Specifications\SystemTimeSetTo.cs" />
+    <Compile Include="Specifications\TheCustomer.cs" />
     <Compile Include="Templates\Extensions.cs" />
+    <Compile Include="Templates\HasMessages.cs" />
     <Compile Include="Templates\MessageSpecification.cs" />
     <Compile Include="Templates\ModuleSpecification.cs" />
     <Compile Include="Templates\SerializationEqualityComparer.cs" />

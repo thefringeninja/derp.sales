@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Derp.Sales.Messaging;
+using Derp.Sales.Tests.Templates;
 using Nancy;
 using Nancy.Testing;
 using Newtonsoft.Json;
 
 namespace Derp.Sales.Tests.Fixtures
 {
-    public class SystemUnderTest
+    public class SystemUnderTest: HasMessages
     {
         public const string ViewModelKey = "###ViewModel###";
         public const string BusKey = "###Bus###";
@@ -129,21 +130,7 @@ namespace Derp.Sales.Tests.Fixtures
         }
 
         #endregion
-    }
 
-    class CouldNotConvertToMessageMessage : Message
-    {
-        private readonly object messageCandidate;
-        public Guid MessageId { get; private set; }
-
-        public CouldNotConvertToMessageMessage(object messageCandidate)
-        {
-            this.messageCandidate = messageCandidate;
-        }
-
-        public override string ToString()
-        {
-            return String.Format("Could not covert {0} to a message.", messageCandidate);
-        }
+        IEnumerable<Message> HasMessages.Messages { get { return Dispatched(); } }
     }
 }

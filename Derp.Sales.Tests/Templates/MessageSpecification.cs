@@ -4,25 +4,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using System.Threading.Tasks;
 using Derp.Sales.Messaging;
 using Derp.Sales.Tests.Fixtures;
 using Simple.Testing.ClientFramework;
 
 namespace Derp.Sales.Tests.Templates
 {
-    public class MessageSpecification : TypedSpecification<MessageSpecification.Result>
+    public class MessageSpecification : TypedSpecification<MessageSpecification.Result>, HasMessages
     {
         public Action Before;
         public Action<IBus> Bootstrap = bus => { };
 
 
-        public List<Expression<Func<Result, bool>>> Expect = new List<Expression<Func<Result, bool>>>();
+        public List<Expression<Func<Result, bool>>> Assertions = new List<Expression<Func<Result, bool>>>();
         public Action Finally;
 
-        public List<Event> Given = new List<Event>();
+        public readonly List<Event> Given = new List<Event>();
         public string Name;
         public Message When;
+
+        public readonly List<Event> Expect = new List<Event>();
 
         #region TypedSpecification<Result> Members
 
@@ -74,7 +75,10 @@ namespace Derp.Sales.Tests.Templates
 
         public IEnumerable<Expression<Func<Result, bool>>> GetAssertions()
         {
-            return Expect;
+            return new List<Expression<Func<Result, bool>>>(Assertions)
+            {
+                result => result.EventsMatched(this)
+            };
         }
 
         public Action GetFinally()
@@ -130,13 +134,13 @@ namespace Derp.Sales.Tests.Templates
 
         #region Nested type: Result
 
-        public class Result
+        public class Result : HasMessages
         {
-            private readonly IEnumerable<Message> actions;
+            public readonly IEnumerable<Message> Actions;
 
             public Result(IEnumerable<Message> actions, Exception ex = null)
             {
-                this.actions = actions;
+                this.Actions = actions;
                 if (ex is AggregateException)
                 {
                     ex = ex.GetBaseException();
@@ -151,50 +155,32 @@ namespace Derp.Sales.Tests.Templates
 
             public Exception ThrownException { get; private set; }
 
-                    public bool DidNotChangeAnything()
-        {
-            return false == actions.Any();
-        }
-
-        public bool Does(params Func<object>[] does)
-        {
-            var shouldHaveDone = does.Select(ToMessage).ToList();
-            var did = actions.ToList();
-            return shouldHaveDone.SequenceEqual(did, MessageEqualityComparer.Instance);
-        }
-
-        private static Message ToMessage(Func<object> factory)
-        {
-            dynamic messageCandidate = factory();
-
-            try
+            public bool DidNotChangeAnything()
             {
-                return (Command) messageCandidate;
-            }
-            catch
-            {
-            }
-            try
-            {
-                return (Event) messageCandidate;
-            }
-            catch
-            {
-            }
-            return new CouldNotConvertToMessageMessage(messageCandidate);
+                return false == Actions.Any();
             }
 
             public override string ToString()
             {
                 return ThrewAnException
                     ? ThrownException.Message
-                    : actions.Aggregate(
+                    : Actions.Aggregate(
                         new StringBuilder(),
                         (builder, action) => builder.Append(action).AppendLine(),
                         builder => builder.ToString());
             }
+
+            IEnumerable<Message> HasMessages.Messages
+            {
+                get { return Actions; }
+            }
         }
 
         #endregion
+
+        IEnumerable<Message> HasMessages.Messages
+        {
+            get { return Expect; }
+        }
     }
 }

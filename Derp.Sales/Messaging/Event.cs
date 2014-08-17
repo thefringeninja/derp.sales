@@ -5,13 +5,13 @@ namespace Derp.Sales.Messaging
 {
     [DataContract] public abstract class Event : Message
     {
-        [DataMember(Order = 1)] public readonly Guid MessageId = Guid.NewGuid();
+        [DataMember(Order = 1)] private readonly Guid messageId = Guid.NewGuid();
 
         #region Message Members
 
         Guid Message.MessageId
         {
-            get { return MessageId; }
+            get { return messageId; }
         }
 
         #endregion

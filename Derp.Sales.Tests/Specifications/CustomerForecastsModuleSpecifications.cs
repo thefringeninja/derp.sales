@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Derp.Sales.MessageBuilders;
-using Derp.Sales.Messages;
-using Derp.Sales.Messaging;
 using Derp.Sales.Tests.Fixtures;
 using Derp.Sales.Tests.Templates;
 using Derp.Sales.Web.Features.CustomerForecasts;
